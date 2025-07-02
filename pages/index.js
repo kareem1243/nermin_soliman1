@@ -1,59 +1,86 @@
 import { useState } from 'react';
-import AccountDrawer from '../components/AccountDrawer';
-import CartDrawer from '../components/CartDrawer';
-import CategoryTabs from '../components/CategoryTabs';
-import ProductCard from '../components/ProductCard';
 
 export default function Home() {
-  const [cartOpen, setCartOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const categories = ['All', 'Scanker', 'Perfume', 'Clothes'];
 
-  const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
-  };
-
-  const products = [
-    { id: 1, name: 'Scanker A', price: 50, category: 'Scanker', img: 'https://via.placeholder.com/300x300/0f0/fff?text=Scanker+A' },
-    { id: 2, name: 'Perfume B', price: 80, category: 'Perfume', img: 'https://via.placeholder.com/300x300/f00/fff?text=Perfume+B' },
-    { id: 3, name: 'T-Shirt', price: 30, category: 'Clothes', img: 'https://via.placeholder.com/300x300/00f/fff?text=T-Shirt' },
-    { id: 4, name: 'Dress', price: 120, category: 'Clothes', img: 'https://via.placeholder.com/300x300/ff0/000?text=Dress' },
-  ];
+  const addToCart = () => setCartCount(cartCount + 1);
 
   return (
-    <div className="min-h-screen bg-neutral-900 text-white">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white font-sans">
       {/* Navbar */}
-      <div className="flex justify-between items-center p-4 bg-black">
-        <button onClick={() => setDrawerOpen(true)} className="text-2xl">☰</button>
-        <h1 className="text-xl font-bold">nermin_soliman1</h1>
-        <div className="flex space-x-3 items-center">
-          <button onClick={() => setCartOpen(true)} className="relative text-2xl">
+      <header className="flex justify-between items-center p-4 bg-black shadow">
+        <button onClick={() => setDrawerOpen(!drawerOpen)} className="text-2xl">☰</button>
+        <h1 className="text-xl font-bold tracking-widest">nermin_soliman1</h1>
+        <div className="flex items-center space-x-4">
+          <button className="relative">
             🛒
-            {cartItems.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 rounded-full px-1 text-xs">
-                {cartItems.length}
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-2 bg-red-500 rounded-full px-1 text-xs">
+                {cartCount}
               </span>
             )}
           </button>
-          <button className="text-2xl">🔍</button>
+          <button>🔍</button>
         </div>
-      </div>
+      </header>
 
-      {/* Drawers */}
-      <AccountDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} cartItems={cartItems} />
+      {/* Drawer */}
+      {drawerOpen && (
+        <aside className="bg-gray-800 p-4 space-y-4 text-left">
+          <div>
+            <p className="font-semibold">Account</p>
+            <div className="pl-4 space-y-1">
+              <button className="hover:underline">Log In</button>
+              <button className="hover:underline">Sign Up</button>
+            </div>
+          </div>
+          <p>Points: 0</p>
+          <hr className="border-gray-600" />
+          <a href="https://www.instagram.com/nermin_soliman1" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-1 hover:underline">
+            <span>Instagram</span> <span>📸</span>
+          </a>
+        </aside>
+      )}
 
-      {/* Category Tabs */}
-      <CategoryTabs active={activeCategory} setActive={setActiveCategory} />
+      {/* Categories */}
+      <section className="flex justify-center flex-wrap gap-2 mt-6">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className="bg-white text-black rounded-full px-4 py-1 font-semibold shadow hover:bg-gray-200 transition"
+          >
+            {cat}
+          </button>
+        ))}
+      </section>
 
-      {/* Product Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
-        {products.filter(p => activeCategory === 'All' || p.category === activeCategory)
-          .map(product => (
-            <ProductCard key={product.id} product={product} addToCart={addToCart} />
-          ))}
-      </div>
+      {/* Products Grid */}
+      <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4 mt-4">
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
+          <div
+            key={id}
+            className="bg-white text-black rounded-xl overflow-hidden shadow hover:shadow-lg transition transform hover:-translate-y-1"
+          >
+            <img
+              src={`https://via.placeholder.com/300x200.png?text=Product+${id}`}
+              alt={`Product ${id}`}
+              className="w-full h-40 object-cover"
+            />
+            <div className="p-2 space-y-1">
+              <h2 className="font-semibold">Product {id}</h2>
+              <p className="text-sm text-gray-600">$ {(id * 10).toFixed(2)}</p>
+              <button
+                onClick={addToCart}
+                className="w-full bg-blue-600 text-white rounded py-1 mt-1 hover:bg-blue-700 transition"
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
