@@ -1,86 +1,54 @@
-import { useState } from 'react';
+// 🚀 مشروع متجر Nermin Shop - الأساسيات // باستخدام React + Tailwind + Firebase بشكل مبسط ومنظم
 
-export default function Home() {
-  const [cartCount, setCartCount] = useState(0);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const categories = ['All', 'Scanker', 'Perfume', 'Clothes'];
+import React, { useState, useEffect } from 'react'; import { initializeApp } from 'firebase/app'; import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'; import { getFirestore, collection, addDoc, getDocs } from 'firebase/firestore'; import { Moon, Sun, ShoppingCart, Search } from 'lucide-react';
 
-  const addToCart = () => setCartCount(cartCount + 1);
+const firebaseConfig = { apiKey: "AIzaSyBDBAdBrhYYA5etcbTne5I-TQmn5r5wy-Y", authDomain: "nermin-shop.firebaseapp.com", projectId: "nermin-shop", storageBucket: "nermin-shop.firebasestorage.app", messagingSenderId: "712335960805", appId: "1:712335960805:web:e00dcc1cebb4449ec7420c" };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white font-sans">
-      {/* Navbar */}
-      <header className="flex justify-between items-center p-4 bg-black shadow">
-        <button onClick={() => setDrawerOpen(!drawerOpen)} className="text-2xl">☰</button>
-        <h1 className="text-xl font-bold tracking-widest">nermin_soliman1</h1>
-        <div className="flex items-center space-x-4">
-          <button className="relative">
-            🛒
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-2 bg-red-500 rounded-full px-1 text-xs">
-                {cartCount}
-              </span>
-            )}
-          </button>
-          <button>🔍</button>
+const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
+
+export default function NerminShop() { const [darkMode, setDarkMode] = useState(true); const [searchQuery, setSearchQuery] = useState(''); const [cartItems, setCartItems] = useState([]); const [user, setUser] = useState(null); const [products, setProducts] = useState([]);
+
+useEffect(() => { onAuthStateChanged(auth, (user) => { setUser(user); }); }, []);
+
+const toggleTheme = () => setDarkMode(!darkMode);
+
+const handleSearch = (e) => setSearchQuery(e.target.value);
+
+const addToCart = (product) => { setCartItems([...cartItems, product]); };
+
+const fetchProducts = async () => { const querySnapshot = await getDocs(collection(db, 'products')); const fetchedProducts = []; querySnapshot.forEach((doc) => { fetchedProducts.push({ id: doc.id, ...doc.data() }); }); setProducts(fetchedProducts); };
+
+useEffect(() => { fetchProducts(); }, []);
+
+return ( <div className={darkMode ? 'bg-black text-white min-h-screen' : 'bg-white text-black min-h-screen'}> {/* Navbar */} <header className="flex justify-between items-center p-4 shadow sticky top-0 bg-opacity-80 backdrop-blur z-50"> <button onClick={toggleTheme}> {darkMode ? <Sun className="text-white" /> : <Moon className="text-black" />} </button> <h1 className="font-bold tracking-widest">nermin_soliman1</h1> <div className="flex items-center space-x-4"> <div className="relative"> <Search className={darkMode ? 'text-white' : 'text-black'} /> <input
+type="text"
+placeholder="Search..."
+value={searchQuery}
+onChange={handleSearch}
+className="absolute top-0 left-8 bg-transparent border-b focus:outline-none"
+/> </div> <div className="relative"> <ShoppingCart className={darkMode ? 'text-white' : 'text-black'} /> {cartItems.length > 0 && ( <span className="absolute -top-1 -right-2 bg-red-500 rounded-full px-1 text-xs"> {cartItems.length} </span> )} </div> </div> </header>
+
+{/* Products */}
+  <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
+    {products
+      .filter((p) => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+      .map((product) => (
+        <div key={product.id} className="bg-white text-black rounded-lg shadow overflow-hidden">
+          <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
+          <div className="p-2">
+            <h2 className="font-semibold">{product.name}</h2>
+            <p className="text-sm text-gray-600">EGP {product.price}</p>
+            <button
+              onClick={() => addToCart(product)}
+              className="bg-blue-600 text-white w-full mt-2 rounded py-1 hover:bg-blue-700"
+            >
+              Add to Cart
+            </button>
+          </div>
         </div>
-      </header>
+      ))}
+  </section>
+</div>
 
-      {/* Drawer */}
-      {drawerOpen && (
-        <aside className="bg-gray-800 p-4 space-y-4 text-left">
-          <div>
-            <p className="font-semibold">Account</p>
-            <div className="pl-4 space-y-1">
-              <button className="hover:underline">Log In</button>
-              <button className="hover:underline">Sign Up</button>
-            </div>
-          </div>
-          <p>Points: 0</p>
-          <hr className="border-gray-600" />
-          <a href="https://www.instagram.com/nermin_soliman1" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-1 hover:underline">
-            <span>Instagram</span> <span>📸</span>
-          </a>
-        </aside>
-      )}
+); }
 
-      {/* Categories */}
-      <section className="flex justify-center flex-wrap gap-2 mt-6">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className="bg-white text-black rounded-full px-4 py-1 font-semibold shadow hover:bg-gray-200 transition"
-          >
-            {cat}
-          </button>
-        ))}
-      </section>
-
-      {/* Products Grid */}
-      <section className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4 mt-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((id) => (
-          <div
-            key={id}
-            className="bg-white text-black rounded-xl overflow-hidden shadow hover:shadow-lg transition transform hover:-translate-y-1"
-          >
-            <img
-              src={`https://via.placeholder.com/300x200.png?text=Product+${id}`}
-              alt={`Product ${id}`}
-              className="w-full h-40 object-cover"
-            />
-            <div className="p-2 space-y-1">
-              <h2 className="font-semibold">Product {id}</h2>
-              <p className="text-sm text-gray-600">$ {(id * 10).toFixed(2)}</p>
-              <button
-                onClick={addToCart}
-                className="w-full bg-blue-600 text-white rounded py-1 mt-1 hover:bg-blue-700 transition"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
-        ))}
-      </section>
-    </div>
-  );
-}
