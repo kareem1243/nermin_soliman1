@@ -1,19 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { X } from "lucide-react";
 
-export default function Sidebar({ isOpen, onClose, user }) {
+export default function Sidebar({ isOpen, setIsOpen }) {
+  if (!isOpen) return null;
+
   return (
-    <div className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform z-50`}>
-      <div className="flex justify-between items-center p-4 border-b">
-        <h2 className="text-lg font-bold dark:text-white">{user ? user.name : "Guest"}</h2>
-        <button onClick={onClose} className="text-2xl dark:text-white">&times;</button>
-      </div>
-      <div className="flex flex-col p-4 space-y-4">
-        <Link to="/login" onClick={onClose} className="text-blue-500 hover:underline">Login</Link>
-        <Link to="/register" onClick={onClose} className="text-blue-500 hover:underline">Register</Link>
-        <Link to="/cart" onClick={onClose} className="text-blue-500 hover:underline">Cart</Link>
-        <Link to="/checkout" onClick={onClose} className="text-blue-500 hover:underline">Checkout</Link>
-      </div>
+    <div className="fixed top-0 left-0 w-64 h-full bg-white dark:bg-gray-800 p-4 shadow-lg z-50">
+      <button onClick={() => setIsOpen(false)} className="mb-4">
+        <X className="w-6 h-6" />
+      </button>
+      <ul className="space-y-4">
+        <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
+        <li><Link to="/login" onClick={() => setIsOpen(false)}>Login</Link></li>
+        <li><Link to="/register" onClick={() => setIsOpen(false)}>Register</Link></li>
+        <li><a href="https://www.instagram.com/nermin_soliman1" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      </ul>
     </div>
   );
 }
