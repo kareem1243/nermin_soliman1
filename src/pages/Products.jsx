@@ -1,58 +1,51 @@
-// ✅ Products.jsx - عرض المنتجات والربط مع صفحة التفاصيل
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const products = [
-  {
-    id: 1,
-    name: 'Face Serum',
-    category: 'skin care',
-    price: 200,
-    image: 'https://via.placeholder.com/300',
-  },
-  {
-    id: 2,
-    name: 'T-Shirt',
-    category: 'clothes',
-    price: 150,
-    image: 'https://via.placeholder.com/300',
-  },
-  {
-    id: 3,
-    name: 'Perfume',
-    category: 'perfume',
-    price: 300,
-    image: 'https://via.placeholder.com/300',
-  },
-  {
-    id: 4,
-    name: 'Moisturizer',
-    category: 'skin care',
-    price: 180,
-    image: 'https://via.placeholder.com/300',
-  },
-];
+const categories = ['All', 'Skin Care', 'Clothes', 'Perfume'];
 
 export default function Products() {
-  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  const products = [
+    { id: 1, name: 'Perfume Rose', category: 'Perfume', price: '$30' },
+    { id: 2, name: 'Skin Cleanser', category: 'Skin Care', price: '$25' },
+    { id: 3, name: 'T-shirt', category: 'Clothes', price: '$15' },
+    { id: 4, name: 'Jeans', category: 'Clothes', price: '$40' },
+    { id: 5, name: 'Face Cream', category: 'Skin Care', price: '$35' },
+    { id: 6, name: 'Perfume Oud', category: 'Perfume', price: '$50' },
+    { id: 7, name: 'Jacket', category: 'Clothes', price: '$60' },
+    { id: 8, name: 'Sunscreen', category: 'Skin Care', price: '$20' },
+  ];
+
+  const filteredProducts = selectedCategory === 'All'
+    ? products
+    : products.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 dark:bg-black min-h-screen">
-      {products.map((product) => (
-        <div
-          key={product.id}
-          className="border rounded p-2 cursor-pointer hover:shadow transition dark:bg-gray-900"
-          onClick={() => navigate(`/product/${product.id}`)}
-        >
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-48 object-cover rounded mb-2"
-          />
-          <h2 className="font-bold dark:text-white">{product.name}</h2>
-          <p className="text-blue-600 font-semibold">${product.price}</p>
-        </div>
-      ))}
+    <div className="p-4">
+      <div className="flex gap-2 mb-4">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-3 py-1 rounded ${selectedCategory === cat ? 'bg-black text-white' : 'bg-gray-200 dark:bg-gray-700 dark:text-white'}`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {filteredProducts.map((product) => (
+          <Link
+            key={product.id}
+            to={`/product/${product.id}`}
+            className="border p-2 rounded dark:bg-gray-800 dark:border-gray-700 hover:shadow"
+          >
+            <h2 className="font-semibold">{product.name}</h2>
+            <p className="text-blue-500">{product.price}</p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
-            }
+}
