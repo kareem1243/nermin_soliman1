@@ -1,21 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Menu, ShoppingCart, Sun, Moon } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import DarkModeToggle from './DarkModeToggle';
 
-export default function Navbar({ setIsSidebarOpen, setDarkMode, darkMode }) {
+export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-4 shadow bg-white dark:bg-gray-900">
-      <button onClick={() => setIsSidebarOpen(true)}>
-        <Menu className="w-6 h-6" />
-      </button>
-      <h1 className="font-bold text-lg">nermin_soliman1</h1>
+    <nav className="flex justify-between items-center p-4 bg-white dark:bg-black shadow">
+      {/* ☰ Sidebar trigger */}
+      <Link to="/menu" className="text-2xl font-bold dark:text-white">☰</Link>
+
+      {/* 🛍️ Site Name */}
+      <Link to="/" className="text-xl font-bold dark:text-white">Nermin Shop</Link>
+
+      {/* 🔍 Search + Cart */}
       <div className="flex items-center gap-4">
-        <Link to="/cart">
-          <ShoppingCart className="w-6 h-6" />
-        </Link>
-        <button onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
-        </button>
+        <Link to="/cart" className="dark:text-white">🛒</Link>
+        <DarkModeToggle />
       </div>
     </nav>
   );
