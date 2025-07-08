@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 export default function useSearch(products) {
   const [results, setResults] = useState([]);
-
   const search = (query) => {
     if (!query) {
       setResults([]);
@@ -13,6 +12,5 @@ export default function useSearch(products) {
     ).slice(0, 4);
     setResults(filtered);
   };
-
   return { results, search };
 }
