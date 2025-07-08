@@ -1,12 +1,7 @@
-export const saveUser = (user) => {
-  localStorage.setItem('user', JSON.stringify(user));
-};
+export function validateUsername(username) {
+  return username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username);
+}
 
-export const getUser = () => {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : null;
-};
-
-export const logoutUser = () => {
-  localStorage.removeItem('user');
-};
+export function validatePassword(password) {
+  return password.length >= 6 && /[0-9]/.test(password) && /[a-zA-Z]/.test(password);
+}
