@@ -1,16 +1,19 @@
 import { useState } from 'react';
+import products from '../data/products';
 
-export default function useSearch(products) {
+export const useSearch = () => {
   const [results, setResults] = useState([]);
+
   const search = (query) => {
     if (!query) {
       setResults([]);
       return;
     }
-    const filtered = products.filter((p) =>
-      p.name.toLowerCase().startsWith(query.toLowerCase())
+    const filtered = products.filter((item) =>
+      item.name.toLowerCase().startsWith(query.toLowerCase())
     ).slice(0, 4);
     setResults(filtered);
   };
+
   return { results, search };
-}
+};
