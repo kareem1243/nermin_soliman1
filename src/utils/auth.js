@@ -1,7 +1,9 @@
-export function validateUsername(username) {
-  return username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username);
-}
+export const validateUsername = (username) => {
+  return username.length >= 3;
+};
 
-export function validatePassword(password) {
-  return password.length >= 6 && /[0-9]/.test(password) && /[a-zA-Z]/.test(password);
-}
+export const validatePassword = (password) => {
+  const hasLetter = /[a-zA-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  return hasLetter && hasNumber && password.length >= 6;
+};
