@@ -1,11 +1,60 @@
 const products = [
-  { id: 1, name: "Skin Care A", category: "Skin Care", price: 120, image: "/skin1.jpg" },
-  { id: 2, name: "Skin Care B", category: "Skin Care", price: 150, image: "/skin2.jpg" },
-  { id: 3, name: "Perfume X", category: "Perfume", price: 200, image: "/perfume1.jpg" },
-  { id: 4, name: "Perfume Y", category: "Perfume", price: 250, image: "/perfume2.jpg" },
-  { id: 5, name: "Clothes Red", category: "Clothes", price: 180, image: "/clothes1.jpg" },
-  { id: 6, name: "Clothes Blue", category: "Clothes", price: 190, image: "/clothes2.jpg" },
-  { id: 7, name: "Skin Care C", category: "Skin Care", price: 130, image: "/skin3.jpg" },
-  { id: 8, name: "Perfume Z", category: "Perfume", price: 220, image: "/perfume3.jpg" },
+  {
+    id: 1,
+    name: "Skin Care A",
+    category: "Skin Care",
+    price: 120,
+    image: "https://source.unsplash.com/400x300/?skincare"
+  },
+  {
+    id: 2,
+    name: "Perfume B",
+    category: "Perfume",
+    price: 250,
+    image: "https://source.unsplash.com/400x300/?perfume"
+  },
+  {
+    id: 3,
+    name: "Clothes C",
+    category: "Clothes",
+    price: 300,
+    image: "https://source.unsplash.com/400x300/?clothes"
+  },
+  {
+    id: 4,
+    name: "Skin Care D",
+    category: "Skin Care",
+    price: 100,
+    image: "https://source.unsplash.com/400x300/?cream"
+  },
+  {
+    id: 5,
+    name: "Perfume E",
+    category: "Perfume",
+    price: 280,
+    image: "https://source.unsplash.com/400x300/?perfume,bottle"
+  },
+  {
+    id: 6,
+    name: "Clothes F",
+    category: "Clothes",
+    price: 180,
+    image: "https://source.unsplash.com/400x300/?tshirt"
+  },
+  {
+    id: 7,
+    name: "Skin Care G",
+    category: "Skin Care",
+    price: 150,
+    image: "https://source.unsplash.com/400x300/?skincare,face"
+  },
+  {
+    id: 8,
+    name: "Perfume H",
+    category: "Perfume",
+    price: 320,
+    image: "https://source.unsplash.com/400x300/?cologne"
+  }
 ];
+
 export default products;
