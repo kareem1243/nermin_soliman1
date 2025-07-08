@@ -1,23 +1,25 @@
-// 🚀 firebase.js
-// ربط المشروع بـ Firebase (التسجيل - تسجيل الدخول - Firestore)
+// src/firebase.js
 
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// بيانات مشروعك في Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyBDBAdBrhYYA5etcbTne5I-TQmn5r5wy-Y",
-  authDomain: "nermin-shop.firebaseapp.com",
-  projectId: "nermin-shop",
-  storageBucket: "nermin-shop.firebasestorage.app",
-  messagingSenderId: "712335960805",
-  appId: "1:712335960805:web:e00dcc1cebb4449ec7420c"
+  apiKey: "AIzaSyDv3hEFN0ggaaCf20RuVVYhnndfy38OBbc",
+  authDomain: "nermin-soliman-store.firebaseapp.com",
+  projectId: "nermin-soliman-store",
+  storageBucket: "nermin-soliman-store.firebasestorage.app",
+  messagingSenderId: "43639651722",
+  appId: "1:43639651722:web:dfcdfd510d739a42c6dc73"
 };
 
-// تهيئة التطبيق
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// التصدير للاستخدام في أي مكان
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+// Initialize Authentication
+const auth = getAuth(app);
+
+// Initialize Firestore Database
+const db = getFirestore(app);
+
+export { auth, db };
