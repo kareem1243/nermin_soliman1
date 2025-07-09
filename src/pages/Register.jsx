@@ -1,32 +1,34 @@
+// src/pages/Register.jsx
 import React, { useState } from 'react';
-import { validatePassword, validateUsername } from '../utils/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
-  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const navigate = useNavigate();
 
-  const handleRegister = () => {
-    if (!validateUsername(username)) {
-      setMessage('❌ Username must be at least 3 characters.');
-      return;
+  const handleRegister = async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        username,
+        email,
+        points: 0
+      });
+      navigate('/account');
+    } catch (error) {
+      alert(error.message);
     }
-    if (!email.includes('@')) {
-      setMessage('❌ Invalid email.');
-      return;
-    }
-    if (!validatePassword(password)) {
-      setMessage('❌ Password must contain letters and numbers.');
-      return;
-    }
-    setMessage('✅ Registered successfully.');
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-black">
       <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-bold mb-4 dark:text-white text-center">Register</h2>
+        <h2 className="text-xl font-bold mb-4 text-center dark:text-white">Register</h2>
         <input
           type="text"
           placeholder="Username"
@@ -54,7 +56,6 @@ export default function Register() {
         >
           Register
         </button>
-        {message && <p className="text-center mt-2 dark:text-white">{message}</p>}
       </div>
     </div>
   );
