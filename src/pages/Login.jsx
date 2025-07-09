@@ -1,32 +1,32 @@
+// src/pages/Login.jsx
 import React, { useState } from 'react';
-import { validatePassword, validateUsername } from '../utils/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (!validateUsername(username)) {
-      setMessage('❌ Username must be at least 3 characters.');
-      return;
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate('/account');
+    } catch (error) {
+      alert(error.message);
     }
-    if (!validatePassword(password)) {
-      setMessage('❌ Password must contain letters and numbers.');
-      return;
-    }
-    setMessage('✅ Logged in successfully.');
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-black">
       <div className="bg-white dark:bg-gray-900 p-6 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-bold mb-4 dark:text-white text-center">Login</h2>
+        <h2 className="text-xl font-bold mb-4 text-center dark:text-white">Login</h2>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="w-full mb-3 p-2 border rounded"
         />
         <input
@@ -42,7 +42,6 @@ export default function Login() {
         >
           Login
         </button>
-        {message && <p className="text-center mt-2 dark:text-white">{message}</p>}
       </div>
     </div>
   );
