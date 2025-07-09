@@ -1,4 +1,4 @@
-// src/components/Sidebar.jsx
+خ// src/components/Sidebar.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { X } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function Sidebar({ open, setOpen, user }) {
         {!user && <Link to="/login" onClick={() => setOpen(false)}>Login</Link>}
         {!user && <Link to="/register" onClick={() => setOpen(false)}>Register</Link>}
         {user && <Link to="/account" onClick={() => setOpen(false)}>Account</Link>}
-        <a href="https://www.instagram.com/your_instagram" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.instagram.com/nermin_soliman1?igsh=enR1bDVsMnV3ZWo4" target="_blank" rel="noreferrer">Instagram</a>
       </div>
     </div>
   );
