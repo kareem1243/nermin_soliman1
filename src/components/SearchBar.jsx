@@ -1,37 +1,31 @@
-import React, { useState } from "react";
+// src/components/SearchBar.jsx
+import React, { useState } from 'react';
 
-export default function SearchBar() {
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
+export default function SearchBar({ products }) {
+  const [query, setQuery] = useState('');
 
-  const products = ["Face Cream", "Lipstick", "T-Shirt", "Perfume", "Moisturizer", "Jeans", "Shampoo", "Serum"];
-
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    if (value.length > 0) {
-      setSuggestions(products.filter(p => p.toLowerCase().startsWith(value.toLowerCase())).slice(0, 4));
-    } else {
-      setSuggestions([]);
-    }
-  };
+  const filtered = query
+    ? products.filter(p => p.name.toLowerCase().startsWith(query.toLowerCase())).slice(0, 4)
+    : [];
 
   return (
-    <div className="p-4">
+    <div className="relative">
       <input
         type="text"
-        value={query}
-        onChange={handleSearch}
         placeholder="Search products..."
-        className="w-full p-2 border rounded"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="p-2 border rounded w-full"
       />
-      {suggestions.length > 0 && (
-        <ul className="bg-white dark:bg-gray-800 mt-2 p-2 rounded shadow">
-          {suggestions.map((s, idx) => (
-            <li key={idx} className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer">{s}</li>
+      {filtered.length > 0 && (
+        <ul className="absolute bg-white border rounded w-full mt-1 max-h-40 overflow-y-auto z-50">
+          {filtered.map(item => (
+            <li key={item.id} className="p-2 hover:bg-gray-100 cursor-pointer">
+              {item.name}
+            </li>
           ))}
         </ul>
       )}
     </div>
   );
-                           }
+}
